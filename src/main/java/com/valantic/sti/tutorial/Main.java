@@ -19,6 +19,19 @@ public class Main extends Application {
         launch(args);
     }
 
+    //
+    // constructor and 'init' iare called in the JavaFX-Launcher thread
+    //
+
+    @Override
+    public void init() {
+
+    }
+
+    //
+    // 'start' and 'stop' are invoked in the JavaFX Application Thread
+    //
+
     @Override
     public void start(final Stage stage) throws IOException {
         window = stage;
@@ -31,5 +44,10 @@ public class Main extends Application {
         final Scene scene = new Scene(parent, 350, 250);
         stage.setScene(scene);
         stage.show();
+    }
+
+    @Override
+    public void stop() {
+        //
     }
 }

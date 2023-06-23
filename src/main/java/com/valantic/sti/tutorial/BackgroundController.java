@@ -4,11 +4,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
 @Slf4j
+@Getter
 public class BackgroundController {
 
     @FXML
@@ -33,13 +35,15 @@ public class BackgroundController {
             longRunningTask.cancel();
         }
         longRunningTask = new LongRunningTask(limit); // task to be run in thread
-        longRunningTask.valueProperty().addListener(
-                (observable, oldValue, newValue) -> outputLabel.setText(String.valueOf(newValue))
-        );
+        longRunningTask.valueProperty().addListener((observable, oldValue, newValue) -> outputLabel.setText(String.valueOf(newValue)));
         progressBar.progressProperty().bind(longRunningTask.progressProperty());
 
         final Thread counterThread = new Thread(longRunningTask);
         counterThread.setDaemon(true);
         counterThread.start();
+
+//        executorService = Executors.newFixedThreadPool(1);
+//        executorService.execute(longRunningTask);
+//        executorService.shutdown();
     }
 }
