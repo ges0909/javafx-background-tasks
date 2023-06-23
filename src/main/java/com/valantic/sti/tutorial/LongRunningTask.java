@@ -4,7 +4,7 @@ import javafx.concurrent.Task;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class CounterTask extends Task<Long> { // generic parameter is type of output
+public class LongRunningTask extends Task<Long> { // generic parameter = 'call' method return type
 
     private final long limit;
 

@@ -20,7 +20,7 @@ public class BackgroundController {
     @FXML
     private ProgressBar progressBar;
 
-    private CounterTask counterTask;
+    private LongRunningTask longRunningTask;
 
     @FXML
     private void handleButtonClick() {
@@ -29,14 +29,16 @@ public class BackgroundController {
         final String input = inputTextField.getText().replace(",", "");
         final long limit = Long.parseLong(input);
 
-        if (!Objects.isNull(counterTask) && counterTask.isRunning()) {
-            counterTask.cancel();
+        if (Objects.nonNull(longRunningTask) && longRunningTask.isRunning()) {
+            longRunningTask.cancel();
         }
-        counterTask = new CounterTask(limit); // task to be run in thread
-        counterTask.valueProperty().addListener((observable, oldValue, newValue) -> outputLabel.setText(String.valueOf(newValue)));
-        progressBar.progressProperty().bind(counterTask.progressProperty());
+        longRunningTask = new LongRunningTask(limit); // task to be run in thread
+        longRunningTask.valueProperty().addListener(
+                (observable, oldValue, newValue) -> outputLabel.setText(String.valueOf(newValue))
+        );
+        progressBar.progressProperty().bind(longRunningTask.progressProperty());
 
-        final Thread counterThread = new Thread(counterTask);
+        final Thread counterThread = new Thread(longRunningTask);
         counterThread.setDaemon(true);
         counterThread.start();
     }
